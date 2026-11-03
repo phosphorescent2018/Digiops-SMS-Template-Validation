@@ -191,6 +191,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 .err-name { color: #7a2d29; }
 .err-fix { color: #0f7b3d; }
+.err-more { color: #7a2d29; }
 
 /* 手机预览 */
 .preview { flex: 0 0 300px; display: flex; flex-direction: column; align-items: center; }

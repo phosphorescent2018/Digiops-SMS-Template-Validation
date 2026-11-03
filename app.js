@@ -114,12 +114,16 @@ function clearError() {
   els.wrap.classList.remove('error');
 }
 
-function showError(illegal) {
-  const items = illegal.map((x) => {
+function showError(illegal, total) {
+  const MAX_SHOW = 10;
+  const shown = illegal.slice(0, MAX_SHOW);
+  const rest = illegal.length - shown.length;
+  const items = shown.map((x) => {
     const fix = x.fix ? `改为「${x.fix}」` : '改英文表述';
     return `<span class="err-item"><code class="err-char">${escapeHtml(x.char)}</code><span class="err-name">${x.name}（${x.code}）</span><span class="err-fix">→ ${fix}</span></span>`;
-  }).join('');
-  els.err.innerHTML = `<b>保存失败：内容含 ${illegal.length} 个不支持的字符</b><br/>${items}`;
+  }).join('') + (rest > 0 ? `<span class="err-more">等 ${rest} 个字符…</span>` : '');
+  const occurrence = total && total > illegal.length ? `（共 ${total} 处）` : '';
+  els.err.innerHTML = `<b>保存失败：内容含 ${illegal.length} 个不支持的字符${occurrence}</b><br/>${items}`;
   els.err.hidden = false;
   els.wrap.classList.add('error');
   els.content.focus();
@@ -161,9 +165,9 @@ async function handleSave() {
     return;
   }
   // ① 前端校验
-  const { illegal } = analyzeContent(payload.content);
+  const { illegal, total } = analyzeContent(payload.content);
   if (illegal.length) {
-    showError(illegal);
+    showError(illegal, total);
     toast(`保存失败：内容含 ${illegal.length} 个不支持的字符`, 'error');
     return;
   }
@@ -174,7 +178,7 @@ async function handleSave() {
     const res = await mockServer.saveTemplate(payload);
     if (res.code !== 0) {
       // 理论上前端已拦住，这里兜底演示后端口径
-      if (res.data?.illegalChars?.length) showError(res.data.illegalChars.map((x) => ({ char: x.char, code: x.code, name: x.name, fix: x.suggest })));
+      if (res.data?.illegalChars?.length) showError(res.data.illegalChars.map((x) => ({ char: x.char, code: x.code, name: x.name, fix: x.suggest })), res.data.totalOccurrences);
       toast(res.message, 'error');
       return;
     }
