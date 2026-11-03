@@ -17,7 +17,14 @@ const CHAR_META = {
   '’': { name: '弯单引号', fix: "'" },
   '“': { name: '弯双引号', fix: '"' },
   '”': { name: '弯双引号', fix: '"' },
-  '　': { name: '全角空格', fix: '空格' }
+  '　': { name: '全角空格', fix: '空格' },
+  '\u00a0': { name: '不间断空格', fix: '普通空格' },
+  '\u2007': { name: '数字空格', fix: '普通空格' },
+  '\u202f': { name: '窄不间断空格', fix: '普通空格' },
+  '\u200b': { name: '零宽空格', fix: '删除' },
+  '\u200c': { name: '零宽连接符', fix: '删除' },
+  '\u200d': { name: '零宽连接符', fix: '删除' },
+  '\ufeff': { name: '零宽不换行空格', fix: '删除' }
 };
 
 const EMOJI_RE = /\p{Extended_Pictographic}/u;
@@ -118,7 +125,10 @@ function showError(illegal, total) {
   const MAX_SHOW = 10;
   const shown = illegal.slice(0, MAX_SHOW);
   const rest = illegal.length - shown.length;
-  const chars = shown.map((x) => `「${escapeHtml(x.char)}」`).join('') + (rest > 0 ? ` 等 ${rest} 个` : '');
+  const chars = shown.map((x) => {
+    const invisible = /\s/.test(x.char) || /\u200b|\u200c|\u200d|\ufeff/.test(x.char);
+    return invisible ? `[${x.code} ${x.name}]` : `「${escapeHtml(x.char)}」`;
+  }).join('') + (rest > 0 ? ` 等 ${rest} 个` : '');
   els.err.innerHTML = `内容含不支持的特殊字符：${chars}`;
   els.err.hidden = false;
   els.wrap.classList.add('error');
