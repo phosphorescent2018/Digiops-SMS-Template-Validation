@@ -180,8 +180,7 @@ button { font-family: inherit; cursor: pointer; }
 .textarea-wrap textarea::placeholder { color: #b6becc; }
 .counter { text-align: right; color: var(--text-3); font-size: 12px; margin-top: 6px; }
 .field-error {
-  margin-top: 8px; background: #fff2f2; border: 1px solid #ffd2d3; border-radius: 6px;
-  padding: 10px 12px; color: #b42318; font-size: 13px; line-height: 1.7;
+  margin-top: 8px; color: #d4380d; font-size: 13px; line-height: 1.6;
 }
 .field-error b { color: #b42318; }
 .err-item { display: inline-flex; align-items: center; gap: 6px; margin-right: 12px; }

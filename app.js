@@ -58,7 +58,7 @@ const mockServer = {
         code: 422,
         message: `保存失败：内容含 ${illegal.length} 个不支持的字符`,
         data: {
-          illegalChars: illegal.map((x) => ({ char: x.char, code: x.code, name: x.name, suggest: x.fix })),
+          illegalChars: illegal.map((x) => x.char),
           totalOccurrences: total
         }
       };
@@ -118,12 +118,8 @@ function showError(illegal, total) {
   const MAX_SHOW = 10;
   const shown = illegal.slice(0, MAX_SHOW);
   const rest = illegal.length - shown.length;
-  const items = shown.map((x) => {
-    const fix = x.fix ? `改为「${x.fix}」` : '改英文表述';
-    return `<span class="err-item"><code class="err-char">${escapeHtml(x.char)}</code><span class="err-name">${x.name}（${x.code}）</span><span class="err-fix">→ ${fix}</span></span>`;
-  }).join('') + (rest > 0 ? `<span class="err-more">等 ${rest} 个字符…</span>` : '');
-  const occurrence = total && total > illegal.length ? `（共 ${total} 处）` : '';
-  els.err.innerHTML = `<b>保存失败：内容含 ${illegal.length} 个不支持的字符${occurrence}</b><br/>${items}`;
+  const chars = shown.map((x) => `「${escapeHtml(x.char)}」`).join('') + (rest > 0 ? ` 等 ${rest} 个` : '');
+  els.err.innerHTML = `内容含不支持的特殊字符：${chars}`;
   els.err.hidden = false;
   els.wrap.classList.add('error');
   els.content.focus();
@@ -178,7 +174,7 @@ async function handleSave() {
     const res = await mockServer.saveTemplate(payload);
     if (res.code !== 0) {
       // 理论上前端已拦住，这里兜底演示后端口径
-      if (res.data?.illegalChars?.length) showError(res.data.illegalChars.map((x) => ({ char: x.char, code: x.code, name: x.name, fix: x.suggest })), res.data.totalOccurrences);
+      if (res.data?.illegalChars?.length) showError(res.data.illegalChars.map((c) => ({ char: c })), res.data.totalOccurrences);
       toast(res.message, 'error');
       return;
     }
