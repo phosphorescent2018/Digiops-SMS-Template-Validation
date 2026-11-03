@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>新建模版 - DigiOps 短信模板校验原型</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+<div class="app">
+  <!-- 左侧导航 -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="2" y="2" width="16" height="16" rx="4" fill="#1c2b4a"/>
+        <rect x="22" y="2" width="16" height="16" rx="8" fill="#1c2b4a"/>
+        <rect x="2" y="22" width="16" height="16" rx="8" fill="#1c2b4a"/>
+        <rect x="22" y="22" width="16" height="16" rx="4" fill="#2468f2"/>
+      </svg>
+      <div class="logo-text"><b>mindigital</b><span>GLOBAL</span></div>
+    </div>
+    <nav class="menu">
+      <a class="menu-item"><i class="ico">▦</i>首页</a>
+      <a class="menu-item"><i class="ico">▤</i>用户管理</a>
+      <a class="menu-item"><i class="ico">⇄</i>运营计划</a>
+      <div class="menu-group open">
+        <div class="menu-item group-title"><i class="ico">✉</i>营销渠道<span class="arrow">⌄</span></div>
+        <div class="sub">
+          <a class="sub-item active">短信</a>
+          <a class="sub-item">WhatsApp</a>
+          <a class="sub-item">电销</a>
+          <a class="sub-item">智能语音</a>
+          <a class="sub-item">Viber</a>
+          <a class="sub-item">应用推送</a>
+        </div>
+      </div>
+      <a class="menu-item"><i class="ico">▷</i>活动</a>
+      <a class="menu-item"><i class="ico">⚙</i>系统管理</a>
+      <a class="menu-item guide"><i class="ico">◎</i>设置指南</a>
+    </nav>
+  </aside>
+
+  <!-- 右侧主体 -->
+  <section class="main">
+    <header class="topbar">
+      <button class="hide-menu" id="hideMenuBtn"><span class="lines">☰</span>隐藏菜单</button>
+      <div class="topbar-right">
+        <div class="time-pill"><span class="clock-ico">◔</span><em>Uganda Time</em><span id="clock">2026/11/03 11:32:18</span><span class="refresh">⟳</span></div>
+        <div class="lang">中文 <span class="caret">⌄</span></div>
+        <div class="user"><span class="avatar">◉</span>博华</div>
+      </div>
+    </header>
+
+    <div class="tabs">
+      <div class="tab active">首页 <span class="tab-x">×</span></div>
+      <div class="tab">短信 <span class="tab-x">×</span></div>
+    </div>
+
+    <main class="content">
+      <div class="page-head">
+        <button class="back" id="backBtn">← 返回</button>
+        <h1 id="pageTitle">新建模版</h1>
+        <div class="mode-switch" id="modeSwitch" title="原型演示用：切换新建 / 编辑存量模板">
+          <button class="mode-btn active" data-mode="create">新建</button>
+          <button class="mode-btn" data-mode="edit">编辑存量</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>模版配置</h2>
+          <div class="card-actions">
+            <button class="btn" id="cancelBtn">取消</button>
+            <button class="btn primary" id="saveBtn">保存</button>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="form-area">
+            <div class="grid-2">
+              <div class="field">
+                <label><em>*</em> BusinessID</label>
+                <select id="businessId">
+                  <option value="">请选择</option>
+                  <option>MTN_UG_Phone</option>
+                  <option>MTN_UG_Account_ID</option>
+                  <option>MTN_GH_Phone</option>
+                </select>
+              </div>
+              <div class="field">
+                <label><em>*</em> 模板名称</label>
+                <input id="tplName" type="text" placeholder="请输入" />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label><em>*</em> 触达通道</label>
+                <div class="radio-row">
+                  <label class="radio"><input type="radio" name="channel" value="niuxin" checked /><span class="dot"></span>牛信</label>
+                  <label class="radio"><input type="radio" name="channel" value="sms" /><span class="dot"></span>短信</label>
+                </div>
+              </div>
+              <div class="field">
+                <label><em>*</em> 内容类型</label>
+                <div class="radio-row">
+                  <label class="radio"><input type="radio" name="ctype" value="marketing" checked /><span class="dot"></span>营销类</label>
+                  <label class="radio"><input type="radio" name="ctype" value="notice" /><span class="dot"></span>通知类</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="var-insert">
+              <div class="var-insert-head" id="varToggle">
+                <span class="bar"></span>
+                <span class="var-title">插入变量</span>
+                <span class="help" title="变量不参与字符校验">?</span>
+                <span class="dash"></span>
+                <button class="var-arrow" id="varArrow">›</button>
+              </div>
+              <div class="var-panel" id="varPanel">
+                <p class="var-tip">点击变量插入到光标位置，变量不参与字符校验。</p>
+                <div class="var-list">
+                  <button class="var-chip" data-var="#客户姓名#">#客户姓名#</button>
+                  <button class="var-chip" data-var="#手机号#">#手机号#</button>
+                  <button class="var-chip" data-var="#额度#">#额度#</button>
+                  <button class="var-chip" data-var="#产品名#">#产品名#</button>
+                  <button class="var-chip" data-var="#到期日#">#到期日#</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field content-field">
+              <label><em>*</em> 消息内容</label>
+              <div class="textarea-wrap" id="textareaWrap">
+                <textarea id="content" maxlength="1000" placeholder="请输入消息内容"></textarea>
+              </div>
+              <div class="counter"><span id="charCount">0</span> / 1000</div>
+              <div class="field-error" id="fieldError" hidden></div>
+            </div>
+          </div>
+
+          <!-- 右侧手机预览 -->
+          <aside class="preview">
+            <div class="phone">
+              <div class="phone-notch"></div>
+              <div class="phone-status"><span>09:05</span><span class="status-icons">▮▮▮ ⌁ ▰</span></div>
+              <div class="phone-nav"><span class="chev">‹</span><span class="phone-avatar"></span></div>
+              <div class="phone-name">◉◉◉◉</div>
+              <div class="phone-screen">
+                <div class="bubble" id="phoneBubble">请输入消息内容</div>
+              </div>
+            </div>
+            <div class="preview-note">短信预览（含变量时按示例值展示）</div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- 原型辅助面板：演示用，评审时可隐藏 -->
+      <details class="demo-panel" id="demoPanel">
+        <summary>原型演示辅助（评审用，可忽略）</summary>
+        <div class="demo-body">
+          <div class="demo-row">
+            <span class="demo-label">快速填充：</span>
+            <button class="chip" data-fill="accident">① 事故模板（—）</button>
+            <button class="chip" data-fill="mixed">② 中文 / emoji / 弯引号</button>
+            <button class="chip" data-fill="clean">③ 合规模板</button>
+            <button class="chip" data-fill="variable">④ 变量模板</button>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">校验链路：</span>
+            <button class="chip warn" id="directApiBtn">直接调保存接口（跳过前端校验）</button>
+            <span class="demo-hint">用于验证后端二次校验：接口会返回 422 与非法字符清单。</span>
+          </div>
+          <pre class="api-log" id="apiLog" hidden></pre>
+        </div>
+      </details>
+    </main>
+  </section>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- 接口返回/阻断弹窗 -->
+<div class="mask" id="modalMask" hidden>
+  <div class="modal">
+    <div class="modal-head"><b id="modalTitle">接口返回</b><button class="modal-x" id="modalClose">×</button></div>
+    <div class="modal-body"><pre id="modalBody"></pre></div>
+    <div class="modal-foot"><button class="btn primary" id="modalOk">知道了</button></div>
+  </div>
+</div>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>
