@@ -88,9 +88,7 @@ const els = {
   modalMask: $('#modalMask'),
   modalBody: $('#modalBody'),
   modalTitle: $('#modalTitle'),
-  apiLog: $('#apiLog'),
-  varPanel: $('#varPanel'),
-  varArrow: $('#varArrow')
+  apiLog: $('#apiLog')
 };
 
 const SAMPLE_VALUES = {
@@ -241,25 +239,7 @@ $('#modeSwitch').addEventListener('click', (e) => {
 });
 $('#hideMenuBtn').addEventListener('click', () => document.querySelector('.app').classList.toggle('collapsed'));
 
-// 插入变量
-let lastCursor = 0;
-els.content.addEventListener('blur', () => { lastCursor = els.content.selectionStart; });
-$('#varToggle').addEventListener('click', () => {
-  els.varPanel.hidden = !els.varPanel.hidden;
-  els.varArrow.textContent = els.varPanel.hidden ? '›' : '⌄';
-});
-document.querySelectorAll('.var-chip').forEach((chip) => {
-  chip.addEventListener('click', () => {
-    const v = chip.dataset.var;
-    const pos = lastCursor || els.content.value.length;
-    const val = els.content.value;
-    els.content.value = val.slice(0, pos) + v + val.slice(pos);
-    lastCursor = pos + v.length;
-    els.content.focus();
-    els.content.setSelectionRange(lastCursor, lastCursor);
-    updateCounter(); renderPreview();
-  });
-});
+// 插入变量：仅展示，不提供点击插入交互（避免前端误读交互口径）
 
 // 演示填充
 const FILLS = {

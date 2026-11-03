@@ -158,16 +158,16 @@ button { font-family: inherit; cursor: pointer; }
 .var-arrow {
   width: 26px; height: 26px; border: 1px solid var(--line); background: #fff;
   border-radius: 6px; color: var(--text-3); font-size: 14px; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
 }
+.var-arrow.static { cursor: default; }
 .var-panel { margin-top: 10px; background: #f8faff; border: 1px solid #e2ebff; border-radius: 8px; padding: 12px 14px; }
-.var-panel[hidden] { display: none; }
 .var-tip { margin: 0 0 10px; color: var(--text-3); font-size: 12px; }
 .var-list { display: flex; flex-wrap: wrap; gap: 8px; }
 .var-chip {
   border: 1px solid #cfe0ff; background: #fff; color: #2b5fbf; border-radius: 14px;
-  padding: 4px 12px; font-size: 12px;
+  padding: 4px 12px; font-size: 12px; cursor: default; user-select: text;
 }
-.var-chip:hover { background: #eef4ff; }
 
 /* 消息内容 */
 .content-field { margin-top: 2px; }
