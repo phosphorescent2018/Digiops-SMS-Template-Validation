@@ -27,6 +27,7 @@ const CHAR_META = {
   '\ufeff': { name: '零宽不换行空格', fix: '删除' }
 };
 
+const VAR_RE = /#[^#\n]{1,32}#|\{\{[^{}\n]{1,64}\}\}/g;
 const EMOJI_RE = /\p{Extended_Pictographic}/u;
 const CJK_RE = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/;
 const FULLWIDTH_RE = /[\uff00-\uffef\u3000-\u303f]/;
@@ -41,7 +42,7 @@ function describeChar(ch) {
 
 /** 去掉变量占位符（#xxx#）后再校验；返回 { illegal:[{char,...}], total } */
 function analyzeContent(text) {
-  const withoutVars = text.replace(/#[^#\n]{1,32}#/g, '');
+  const withoutVars = text.replace(VAR_RE, '');
   const seen = new Map();
   let total = 0;
   for (const ch of withoutVars) {
@@ -99,17 +100,18 @@ const els = {
 };
 
 const SAMPLE_VALUES = {
-  '#客户姓名#': 'AKOSUA',
-  '#手机号#': '024XXXXXXX',
-  '#额度#': 'GHS 1,800',
-  '#产品名#': 'MoMoBoost',
-  '#到期日#': '2026-11-30'
+  '{{customer_name}}': 'AKOSUA',
+  '{{msisdn}}': '024XXXXXXX',
+  '{{od_unpaid_amount_eod}}': 'GHS 70',
+  '{{credit_limit}}': 'GHS 1,800',
+  '{{product_name}}': 'MoMoBoost',
+  '{{due_date}}': '2026-11-30'
 };
 
 function renderPreview() {
   let text = els.content.value.trim();
   if (!text) { els.bubble.textContent = '请输入消息内容'; return; }
-  text = text.replace(/#[^#\n]{1,32}#/g, (m) => SAMPLE_VALUES[m] || m.replace(/#/g, ''));
+  text = text.replace(VAR_RE, (m) => SAMPLE_VALUES[m] || '示例');
   els.bubble.textContent = text;
 }
 
@@ -256,7 +258,7 @@ const FILLS = {
   accident: EDIT_SEED.content,
   mixed: '您好，您的额度是 GHS 1,800 😀 请尽快使用…',
   clean: 'GHS 1,800 ready with MoMoBoost. No fee until you borrow - checking is always free.',
-  variable: 'Hello #客户姓名#, your limit is #额度#. Dial *170# option 5 > 3 > 4.'
+  variable: 'Y\'ello {{customer_name}}. Your outstanding MoMo Boost balance is GHS {{od_unpaid_amount_eod}}. Repay on time.'
 };
 document.querySelectorAll('[data-fill]').forEach((btn) => {
   btn.addEventListener('click', () => {
