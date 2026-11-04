@@ -93,10 +93,6 @@ const els = {
   cancel: $('#cancelBtn'),
   title: $('#pageTitle'),
   toast: $('#toastWrap'),
-  modalMask: $('#modalMask'),
-  modalBody: $('#modalBody'),
-  modalTitle: $('#modalTitle'),
-  apiLog: $('#apiLog')
 };
 
 const SAMPLE_VALUES = {
@@ -197,19 +193,6 @@ async function handleSave() {
   }
 }
 
-/* 直接调接口（跳过前端）：演示后端二次校验 */
-async function directApi() {
-  const payload = collectPayload();
-  const res = await mockServer.saveTemplate(payload);
-  els.apiLog.hidden = false;
-  els.apiLog.textContent = 'POST /digiops/template/add\n' + JSON.stringify(
-    { request: { businessId: payload.businessId, name: payload.name, content: payload.content }, response: res },
-    null, 2
-  );
-  els.modalTitle.textContent = res.code === 0 ? '接口返回 200（保存成功）' : `接口返回 ${res.code}（被后端拦截）`;
-  els.modalBody.textContent = JSON.stringify(res, null, 2);
-  els.modalMask.hidden = false;
-}
 
 /* ---------- 模式切换：新建 / 编辑存量 ---------- */
 const EDIT_SEED = {
@@ -253,22 +236,6 @@ $('#hideMenuBtn').addEventListener('click', () => document.querySelector('.app')
 
 // 插入变量：仅展示，不提供点击插入交互（避免前端误读交互口径）
 
-// 演示填充
-const FILLS = {
-  accident: EDIT_SEED.content,
-  mixed: '您好，您的额度是 GHS 1,800 😀 请尽快使用…',
-  clean: 'GHS 1,800 ready with MoMoBoost. No fee until you borrow - checking is always free.',
-  variable: 'Y\'ello {{customer_name}}. Your outstanding MoMo Boost balance is GHS {{od_unpaid_amount_eod}}. Repay on time.'
-};
-document.querySelectorAll('[data-fill]').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    els.content.value = FILLS[btn.dataset.fill];
-    updateCounter(); renderPreview(); clearError();
-  });
-});
-$('#directApiBtn').addEventListener('click', directApi);
-$('#modalClose').addEventListener('click', () => (els.modalMask.hidden = true));
-$('#modalOk').addEventListener('click', () => (els.modalMask.hidden = true));
 
 // 时钟（Uganda Time = UTC+3，原型固定演示日期起步）
 let tick = new Date('2026-11-03T11:32:18');

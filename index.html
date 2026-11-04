@@ -156,40 +156,12 @@
           </aside>
         </div>
       </div>
-
-      <!-- 原型辅助面板：演示用，评审时可隐藏 -->
-      <details class="demo-panel" id="demoPanel">
-        <summary>原型演示辅助（评审用，可忽略）</summary>
-        <div class="demo-body">
-          <div class="demo-row">
-            <span class="demo-label">快速填充：</span>
-            <button class="chip" data-fill="accident">① 事故模板（—）</button>
-            <button class="chip" data-fill="mixed">② 中文 / emoji / 弯引号</button>
-            <button class="chip" data-fill="clean">③ 合规模板</button>
-            <button class="chip" data-fill="variable">④ 变量模板</button>
-          </div>
-          <div class="demo-row">
-            <span class="demo-label">校验链路：</span>
-            <button class="chip warn" id="directApiBtn">直接调保存接口（跳过前端校验）</button>
-            <span class="demo-hint">用于验证后端二次校验：接口会返回 422 与非法字符清单。</span>
-          </div>
-          <pre class="api-log" id="apiLog" hidden></pre>
-        </div>
-      </details>
     </main>
   </section>
 </div>
 
 <div class="toast-wrap" id="toastWrap"></div>
 
-<!-- 接口返回/阻断弹窗 -->
-<div class="mask" id="modalMask" hidden>
-  <div class="modal">
-    <div class="modal-head"><b id="modalTitle">接口返回</b><button class="modal-x" id="modalClose">×</button></div>
-    <div class="modal-body"><pre id="modalBody"></pre></div>
-    <div class="modal-foot"><button class="btn primary" id="modalOk">知道了</button></div>
-  </div>
-</div>
 
 <script type="module" src="./app.js"></script>
 </body>
