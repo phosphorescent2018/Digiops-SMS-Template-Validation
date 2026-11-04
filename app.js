@@ -4,7 +4,7 @@
  */
 
 const GSM7_BASIC =
-  '@£$¥èéùìòÇØøÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !"#¤%&\'()*+,-./0123456789:;<=>?¡' +
+  '@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞ\x1bÆæßÉ !"#¤%&\'()*+,-./0123456789:;<=>?¡' +
   'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà';
 const GSM7_EXT = '^{}\\[~]|€';
 const ALLOWED = new Set((GSM7_BASIC + GSM7_EXT).split(''));
@@ -24,11 +24,7 @@ const CHAR_META = {
   '\u200b': { name: '零宽空格', fix: '删除' },
   '\u200c': { name: '零宽连接符', fix: '删除' },
   '\u200d': { name: '零宽连接符', fix: '删除' },
-  '\ufeff': { name: '零宽不换行空格', fix: '删除' },
-  '\n': { name: '换行', fix: '删除' },
-  '\r': { name: '回车', fix: '删除' },
-  '\x0c': { name: '换页符 FF', fix: '删除' },
-  '\x1b': { name: '控制符 ESC', fix: '删除' }
+  '\ufeff': { name: '零宽不换行空格', fix: '删除' }
 };
 
 const VAR_RE = /#[^#\n]{1,32}#|\{\{[^{}\n]{1,64}\}\}/g;
